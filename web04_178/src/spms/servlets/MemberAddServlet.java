@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberAddServlet extends HttpServlet{
 //HttpServlet는 doGet과 doPost 두 가지 방식이 존재한다. 
 	
+	//Get방식 : 일반적으로 보는 방식, default 방식, a태그도 Get으로 연결된다.
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
@@ -34,7 +35,7 @@ public class MemberAddServlet extends HttpServlet{
 //		form태그의 
 //		method는 Get, Post 방식을 뜻한다. 
 //		어떤 방식이든 form 태그의 action 주소로 전송시킨다.
-		htmlStr += "<form action='add' method='post'>";
+		htmlStr += "<form action='add' method='post'>";		//default : method='get'
 		htmlStr += "이름: <input type='text' name='name'><br>";
 		htmlStr += "이메일: <input type='text' name='email'><br>";
 		htmlStr += "암호: <input type='password' name='password'><br>";
@@ -47,6 +48,7 @@ public class MemberAddServlet extends HttpServlet{
 		
 	}
 	
+	//Post방식 : 입력 등으로 DB에 접근하게 되는 방식
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {

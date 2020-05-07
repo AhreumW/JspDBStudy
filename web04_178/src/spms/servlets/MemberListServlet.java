@@ -73,7 +73,8 @@ public class MemberListServlet extends GenericServlet{
 			String htmlStr = "";
 			//추가 
 			htmlStr += "<p>";
-			htmlStr += "<a href='./add'>신규회원";	//상대경로
+			//a태그는 기본적으로 doGet을 호출한다. 
+			htmlStr += "<a href='./add'>신규회원";	//상대경로 
 			htmlStr += "</a>";
 			htmlStr += "</p>";
 			
