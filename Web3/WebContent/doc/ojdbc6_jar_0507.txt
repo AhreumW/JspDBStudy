@@ -1,0 +1,17 @@
+
+ojdbc6.jar : 는 오라클 데이터베이스관리시스템 연결에 필요한 jar파일이다. 
+dbms 종류에 따라 추가해야하는 jar파일이 다를 수 있다. 
+
+<<ojdbc6.jar 추가하기>>
+
+C:\oraclexe\app\oracle\product\11.2.0\server\jdbc\lib
+에서 ojdbc6.jar 파일 복사
+
+프로젝트에서 WebContent/WEB-INF의 lib에 ojdbc6.jar 붙여넣기
+
+그러면
+java Resources의 Libraries의 Web App Libraries에 
+ojdbc6.jar가 생긴 것을 확인할 수 있다. 
+
+
+

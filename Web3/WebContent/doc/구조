@@ -1,0 +1,8 @@
+
+
+Browser						web Server
+[		]		request		[										]
+[		]	---------->		[										]
+[		]					[										]
+[		]	response		[										]
+[		]	<----------		[										]
