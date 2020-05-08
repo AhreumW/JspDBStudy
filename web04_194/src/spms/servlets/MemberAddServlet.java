@@ -1,4 +1,4 @@
-package tg.servlets;
+package spms.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,14 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//서블릿	->	제너릭서블릿	->	httpServlet
-//GenericServlet보다 구현도가 높음
-public class GuestAddServlet extends HttpServlet{
-//HttpServlet는 doGet과 doPost 두 가지 방식이 존재한다. 
+//web.xml 사용 (요즘은 어노테이션을 주로 사용)
+//@WebServlet("/member/add")
+public class MemberAddServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
@@ -34,12 +34,10 @@ public class GuestAddServlet extends HttpServlet{
 //		form태그의 
 //		method는 Get, Post 방식을 뜻한다. 
 //		어떤 방식이든 form 태그의 action 주소로 전송시킨다.
-		htmlStr += "<form action='add' method='post'>";
+		htmlStr += "<form action='add' method='post'>";		 
 		htmlStr += "이름: <input type='text' name='name'><br>";
-		htmlStr += "ID: <input type='text' name='user_id'><br>";
 		htmlStr += "이메일: <input type='text' name='email'><br>";
 		htmlStr += "암호: <input type='password' name='password'><br>";
-		htmlStr += "월급: <input type='number' name='sal'><br>";
 		htmlStr += "<input type='submit' value='추가'>";
 		htmlStr += "<input type='reset' value='취소'>";
 		htmlStr += "</form>";
@@ -55,8 +53,6 @@ public class GuestAddServlet extends HttpServlet{
 		
 		//db연동을 위해서는 connection이 필수 
 		Connection conn = null;
-		//GenericServlet - Statement의 보안에 취약한 등 단점을 보안한 것이
-		//HttpServletd - PreparedStatement이다. 
 		PreparedStatement pstmt = null;
 		
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";		
@@ -64,30 +60,21 @@ public class GuestAddServlet extends HttpServlet{
 		String password = "jsp12";
 		String driverUrl = "oracle.jdbc.driver.OracleDriver";
 		
-		//입력시의 한글 인코딩설정  
+		//입력시의 한글 인코딩설정   //설명 doGetdoPost.text 참고
 		req.setCharacterEncoding("UTF-8");
 		
 //		사용자의 입력을 받는다.
-//		.getParameter는 form태그 input태그의 name명을 받는다. 
 		String emailStr = req.getParameter("email");
 		String pwdStr = req.getParameter("password");
 		String nameStr = req.getParameter("name");
-		String userIdStr = req.getParameter("user_id");
-		int salStr =  Integer.parseInt(req.getParameter("sal"));
-//		valueOf도 int 형변환을 시켜주나 이는 new Integer객체로 가져오게된다. parseInt보다 비효율적
-//		int salStr =  Integer.valueOf(req.getParameter("sal"));
 		
 		try {
-			//.forName은 import와 같이 불러오는 기능을 하는 메서드이다. 
-			//있을수도 없을수도 있는 영역이기 때문에 try-catch가 필요하다.
 			Class.forName(driverUrl);
 			conn = DriverManager.getConnection(url, user, password);
 			
-//			? : 변화할 수 있는 식별자. (단, 순서를 지켜야 한다.)
-			String sql ="insert into guest "
-					+ "(mno, email, pwd, mname, cre_date, mod_date, user_id, sal) "
-					+ "values(guest_mno_seq.nextval, ?, ?, ?, sysdate, sysdate, ?, ?)";
-//			문자열 + 를 쓰지않고 한번에 입력가능해졌다. 
+			String sql ="insert into member"
+					+ "(mno, email, pwd, mname, cre_date, mod_date)"
+					+ "values(member_mno_seq.nextval, ?, ?, ?, sysdate, sysdate)";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -95,13 +82,8 @@ public class GuestAddServlet extends HttpServlet{
 			pstmt.setString(1, emailStr);
 			pstmt.setString(2, pwdStr);
 			pstmt.setString(3, nameStr);
-			pstmt.setString(4, userIdStr);
-			pstmt.setInt(5, salStr);
 			
-			//이로 update 쿼리가 수행됨
 			pstmt.executeUpdate();
-			//pstmt.executeQuery();	- 이건  select쿼리
-			//-> 자동커밋 수행중
 			
 			res.setContentType("text/html");
 			res.setCharacterEncoding("UTF-8");
@@ -111,9 +93,14 @@ public class GuestAddServlet extends HttpServlet{
 			String htmlStr = "";
 			
 			htmlStr += "<html><head><title>회원등록결과</title>";			
+			//http-equiv='Refresh'는 이 페이지가 meta태그에 의해 새로 읽는다는 것을 의미
+			//content='3; url=./list'	: 3은 3초후에 url에 적힌 주소로 이동한 다는 것을 뜻 함
+			//url을 생략했을 경우 현재의 페이지를 다시 읽어준다. 
 			htmlStr += "<meta http-equiv='Refresh' content='3; url=./list'>";
 			htmlStr += "</head><body>";
 			htmlStr += "<p>등록 성공입니다.!!</p>";
+			//htmlStr += "<div style='width:100px; border:1px solid black; text-align:center;'>";
+			//htmlStr += "<a href='./list'>회원목록</a></div>";
 			htmlStr += "</body></html>";
 			
 			out.println(htmlStr);

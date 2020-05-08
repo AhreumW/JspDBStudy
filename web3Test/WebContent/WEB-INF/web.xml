@@ -28,5 +28,15 @@
 		<servlet-name>GuestAdd</servlet-name>
 		<url-pattern>/guest/add</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GuestUpdate</servlet-name>
+		<servlet-class>tg.servlets.GuestUpdateServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GuestUpdate</servlet-name>
+		<url-pattern>/guest/update</url-pattern>
+	</servlet-mapping>
 
 </web-app>

@@ -1,4 +1,4 @@
-package tg.servlets;
+package spms.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,33 +12,32 @@ import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 
-public class GuestListServlet extends GenericServlet{
+//어노테이션 @	- 메서드단위 어노테이션, 클래스단위 어노테이션
+//			- 해당 메서도, 클래스 바로 위에 작성한다. 
+//@WebServlet("/member/list") 
+// : web.xml에 서블릿을 추가 하지 않고 그 대신 사용할 수 있다. 
+//<servlet>, <servlet-mapping>의 기능
+//- 요즘은 주로  web.xml보다  어노테이션 사용
+@WebServlet("/member/list")		//url 매핑 
+public class MemberListServlet extends GenericServlet{
 
 	@Override
 	public void service(ServletRequest request, ServletResponse response) 
 			throws ServletException, IOException {
 		
-//		UserList 제너릭 서블릿 만든다
-//
-//		서비스에
-//		jsp계정의 멤버 테이블을 불러온다
-//
-//		mno, mname, email, cre_date, 수정날짜까지
-//		번호 내림차순으로 정렬하여 표시하시오
-//
-//		, 뛰워쓰기정도는 해보시오
+//		데이터베이스 관련 객체 변수 선언
+		Connection conn = null;		//연결  
+		Statement stmt = null;		//상태 
+		ResultSet rs = null;		//결과 
 		
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null; 
-		
-		//계정
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";		//localhost = 127.0.0.1 = ip주소
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";	
 		String user = "jsp";
 		String password = "jsp12";
 		
 		try {
+//			클래스 로드
 //			1. jdbc드라이버 등록
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -48,9 +47,9 @@ public class GuestListServlet extends GenericServlet{
 //			3. sql 실행 객체 준비
 			stmt = conn.createStatement();
 			
-			String sql = "SELECT MNO, MNAME, EMAIL, CRE_DATE, MOD_DATE, USER_ID, SAL"
-					+ " FROM GUEST"
-					+ " ORDER BY MNO DESC";
+			String sql = "select mno, mname, email, cre_date"
+					+ " from member"
+					+ " order by mno asc";
 			
 //			sql 실행문
 //			4. 결과 가져오기
@@ -59,13 +58,13 @@ public class GuestListServlet extends GenericServlet{
 			response.setContentType("text/html");
 			response.setCharacterEncoding("UTF-8");
 			
-			//응답에 대한 모든 결과를 볼 수 있도록 함
 			PrintWriter out = response.getWriter();
 			
 			String htmlStr = "";
 			//추가 
 			htmlStr += "<p>";
-			htmlStr += "<a href='./add'>신규회원";	//상대경로
+			//a태그는 기본적으로 doGet을 호출한다. 
+			htmlStr += "<a href='./add'>신규회원";	//상대경로 
 			htmlStr += "</a>";
 			htmlStr += "</p>";
 			
@@ -74,31 +73,24 @@ public class GuestListServlet extends GenericServlet{
 			out.println(htmlStr);
 			
 //			5. 출력
-			//Iterator .next() : 값이 있는지 없는지에 대한 true, false
-			//ResultSet rs는 size(), length 따위 없음
 			while(rs.next()) {
 				out.println(
-					"<div>"	+
-					rs.getInt("mno") + ", " 
-					+ "<a href='./update?mNo=" + rs.getString("MNO")+"'>" +  
-					rs.getString("mname") + "</a>, " + 
+					rs.getInt("mno") + ", " + 
+					rs.getString("mname") + ", " + 
 					rs.getString("email") + ", " + 
-					rs.getDate("cre_date") + ", " + 
-					rs.getDate("mod_date") + ", " + 
-					rs.getString("user_id") + ", " + 
-					rs.getInt("sal") + "</div>"
+					rs.getDate("cre_date") + "</br>"
 				);
 			}
 			out.println("</body></html>");
 			
-			
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			 
+			e.printStackTrace();
+		} catch (SQLException e) {
+			 
 			e.printStackTrace();
 		}finally {
+			//6. 자원 해제 
 			
 			//결과셋 해제
 			if(rs != null) {	//null이 아닌 경우=객체가 존재하는경우, close시킨다.
@@ -126,9 +118,10 @@ public class GuestListServlet extends GenericServlet{
 					e.printStackTrace();
 				}
 			}
-		}
+		
+		} // finally 종료
 		
 		
-	}
+	}// service end
 
 }
