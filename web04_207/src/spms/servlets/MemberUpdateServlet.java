@@ -193,7 +193,6 @@ public class MemberUpdateServlet extends HttpServlet{
 			String htmlStr = "";
 			
 			htmlStr += "<html><head><title>회원정보수정결과</title>";			
-			htmlStr += "<meta http-equiv='Refresh' content='3; url=./list'>";
 			htmlStr += "</head><body>";
 			htmlStr += "<p>수정 성공입니다.!!</p>";
 			htmlStr += "</body></html>";
