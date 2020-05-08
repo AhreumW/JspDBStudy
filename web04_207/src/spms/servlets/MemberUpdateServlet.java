@@ -155,6 +155,7 @@ public class MemberUpdateServlet extends HttpServlet{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
+		//web.xml에서 서블릿 initParam으로 설정된 변수를 불러온다. -> 이전보다 보안증가
 		String driver = this.getInitParameter("driver");
 		String url = this.getInitParameter("url");
 		String user = this.getInitParameter("user");
@@ -182,7 +183,7 @@ public class MemberUpdateServlet extends HttpServlet{
 			pstmt.setString(2, name);
 			pstmt.setInt(3, mNo);
 			
-			pstmt.executeUpdate();
+			pstmt.executeUpdate();	//여기서 DB 반영됨
 			
 			res.setContentType("text/html");
 			res.setCharacterEncoding("UTF-8");

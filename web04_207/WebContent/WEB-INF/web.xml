@@ -32,6 +32,7 @@
 		<servlet-name>MemberUpdate</servlet-name>
 		<servlet-class>spms.servlets.MemberUpdateServlet</servlet-class>
 		
+		<!-- 처음 생성될 때 만들어지는 파라미터, 인스턴스 변수 -->
 		<init-param>
 			<param-name>driver</param-name>
 			<param-value>oracle.jdbc.driver.OracleDriver</param-value>
