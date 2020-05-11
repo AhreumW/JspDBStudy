@@ -85,6 +85,8 @@ public class MemberAddServlet extends HttpServlet{
 			
 			pstmt.executeUpdate();
 			
+			res.sendRedirect("./list");
+			
 			res.setContentType("text/html");
 			res.setCharacterEncoding("UTF-8");
 			

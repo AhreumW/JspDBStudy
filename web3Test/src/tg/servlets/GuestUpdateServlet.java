@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +27,13 @@ public class GuestUpdateServlet extends HttpServlet{
 		PreparedStatement pstmt = null;		//상태 
 		ResultSet rs = null;		//결과 
 		
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";	
-		String user = "jsp";
-		String password = "jsp12";
+
+		ServletContext sc = this.getServletContext();
+		//<context-param>의 이름들을 가져온다. 
+		String driver = sc.getInitParameter("driver");
+		String url = sc.getInitParameter("url");
+		String user = sc.getInitParameter("user");
+		String password = sc.getInitParameter("password");
 		
 		int mNo = Integer.parseInt(req.getParameter("mNo"));
 		//System.out.println(mNo);
@@ -36,7 +41,7 @@ public class GuestUpdateServlet extends HttpServlet{
 		try {	
 //			클래스 로드
 //			1. jdbc드라이버 등록
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(driver);
 			
 //			2. 데이터베이스 연결
 			conn = DriverManager.getConnection(url, user, password);
@@ -96,7 +101,10 @@ public class GuestUpdateServlet extends HttpServlet{
 			htmlStr += "월급: <input type='text' name='sal' value='"+ sal +"'><br>";
 			htmlStr += "<input type='submit' value='저장'>";
 			//htmlStr += "<input type='button' value='취소' onclick='location.href=" + "./list" + "'>";
-			htmlStr += "<input type='button' value='취소' onclick='location.href=\"./list\"'>";
+			htmlStr += "<input type='button' value='삭제'"
+					+ " onclick='location.href=\"./delete?mNo="+mNo+"\"'>";
+			htmlStr += "<input type='button' value='취소'"
+					+ " onclick='location.href=\"./list\"'>";
 			htmlStr += "</form>";
 			htmlStr += "</body>";
 			htmlStr += "</html>";

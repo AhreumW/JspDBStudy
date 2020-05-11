@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class GuestListServlet extends HttpServlet{
+public class GuestListServlet2_pre extends HttpServlet{
 
 	
 	@Override
@@ -84,7 +84,7 @@ public class GuestListServlet extends HttpServlet{
 			//ResultSet rs는 size(), length 따위 없음
 			while(rs.next()) {
 				out.println(
-					"<form action='./delete'>" + 
+					"<form action='./list' method='post'>" + 
 					"<div>"	+
 					rs.getInt("mno") + ", " 
 					+ "<a href='./update?mNo=" + rs.getString("MNO")+"'>" +  
@@ -94,7 +94,7 @@ public class GuestListServlet extends HttpServlet{
 					rs.getDate("mod_date") + ", " + 
 					rs.getString("user_id") + ", " + 
 					rs.getInt("sal") + 
-					"<input type='hidden' name='mNo' value='"+rs.getInt("MNO")+"'>" + 
+					"<input type='hidden' name='mno' value='"+rs.getInt("MNO")+"'>" + 
 					"<input type='submit' value='삭제'>" + 
 					"</div>"+
 					"</form>"
@@ -146,6 +146,65 @@ public class GuestListServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
 		
+		req.setCharacterEncoding("UTF-8");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		ServletContext sc = this.getServletContext();
+
+		String driver = sc.getInitParameter("driver");
+		String url = sc.getInitParameter("url");
+		String user = sc.getInitParameter("user");
+		String password = sc.getInitParameter("password");
+		
+		int mNo = Integer.parseInt(req.getParameter("mno"));
+		
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, user, password);
+			
+			String sql ="";
+			
+			sql ="DELETE FROM GUEST";
+			sql += " WHERE MNO=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, mNo);
+			
+			pstmt.executeUpdate();	 
+			
+			res.sendRedirect("./list");
+			
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}finally {
+			//6. 자원 해제 
+			//상태 해제
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+			
+			//연결 해제 - conn가 db
+			if(conn != null) {
+				try {
+					conn.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		
+		}
 	}
 
 }

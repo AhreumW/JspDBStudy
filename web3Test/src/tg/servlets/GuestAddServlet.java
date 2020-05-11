@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -59,10 +60,12 @@ public class GuestAddServlet extends HttpServlet{
 		//HttpServletd - PreparedStatement이다. 
 		PreparedStatement pstmt = null;
 		
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";		
-		String user = "jsp";
-		String password = "jsp12";
-		String driverUrl = "oracle.jdbc.driver.OracleDriver";
+		ServletContext sc = this.getServletContext();
+		//<context-param>의 이름들을 가져온다. 
+		String driver = sc.getInitParameter("driver");
+		String url = sc.getInitParameter("url");
+		String user = sc.getInitParameter("user");
+		String password = sc.getInitParameter("password");
 		
 		//입력시의 한글 인코딩설정  
 		req.setCharacterEncoding("UTF-8");
@@ -80,7 +83,7 @@ public class GuestAddServlet extends HttpServlet{
 		try {
 			//.forName은 import와 같이 불러오는 기능을 하는 메서드이다. 
 			//있을수도 없을수도 있는 영역이기 때문에 try-catch가 필요하다.
-			Class.forName(driverUrl);
+			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
 			
 //			? : 변화할 수 있는 식별자. (단, 순서를 지켜야 한다.)

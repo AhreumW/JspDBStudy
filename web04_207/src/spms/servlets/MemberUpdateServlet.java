@@ -36,8 +36,9 @@ public class MemberUpdateServlet extends HttpServlet{
 		String user = "jsp";
 		String password = "jsp12";
 		
+		String mNoStr = req.getParameter("mNo");
 		//모든 form태그는 String으로 가져온다. 
-		int mNo = Integer.parseInt(req.getParameter("mNo"));
+		int mNo = Integer.parseInt(mNoStr);
 		//System.out.println(mNo);
 		
 		try {	
@@ -185,19 +186,23 @@ public class MemberUpdateServlet extends HttpServlet{
 			
 			pstmt.executeUpdate();	//여기서 DB 반영됨
 			
-			res.setContentType("text/html");
-			res.setCharacterEncoding("UTF-8");
 			
-			PrintWriter out = res.getWriter();
+			res.sendRedirect("./list");
 			
-			String htmlStr = "";
+//			res.setContentType("text/html");
+//			res.setCharacterEncoding("UTF-8");
+//			
+//			PrintWriter out = res.getWriter();
+//			
 			
-			htmlStr += "<html><head><title>회원정보수정결과</title>";			
-			htmlStr += "</head><body>";
-			htmlStr += "<p>수정 성공입니다.!!</p>";
-			htmlStr += "</body></html>";
-			
-			out.println(htmlStr);
+//			String htmlStr = "";
+//			
+//			htmlStr += "<html><head><title>회원정보수정결과</title>";			
+//			htmlStr += "</head><body>";
+//			htmlStr += "<p>수정 성공입니다.!!</p>";
+//			htmlStr += "</body></html>";
+//			
+//			out.println(htmlStr);
 			
 		} catch (ClassNotFoundException e) {
 
