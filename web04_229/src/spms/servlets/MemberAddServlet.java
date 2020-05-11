@@ -60,7 +60,8 @@ public class MemberAddServlet extends HttpServlet{
 		String password = "jsp12";
 		String driverUrl = "oracle.jdbc.driver.OracleDriver";
 		
-		//입력시의 한글 인코딩설정   //설명 doGetdoPost.text 참고
+		//입력시의 한글 인코딩설정   
+		//CharacterEncodingFilter가 처리해 주기 때문에 따로 입력하지 않아도 된다. 
 //		req.setCharacterEncoding("UTF-8");
 		
 //		사용자의 입력을 받는다.

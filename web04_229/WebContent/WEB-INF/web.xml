@@ -29,6 +29,7 @@
 
 
 	<!-- 필터 선언 -->
+	<!-- 무조건 먼저 필터가 수행된다.  -->
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<filter-class>spms.filters.CharacterEncodingFilter</filter-class>
@@ -42,6 +43,7 @@
 	<filter-mapping>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>	<!-- /* : 모든  url -->
+		<!-- url-pattern으로 제약을 줄 수 있다. - 정규표현식을 알아야 함 -->
 	</filter-mapping>
 	
 
