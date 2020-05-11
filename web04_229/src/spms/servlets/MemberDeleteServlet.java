@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MemberDeleteServlet extends HttpServlet{
 	
-	//관리자가 보는 페이지라는 가정하에
-	//접근권한이 있는 사람이므로 이렇게 doGet으로 빠르게 하는 경우도 있다.
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
