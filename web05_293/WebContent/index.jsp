@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 
 <script type="text/javascript">
-	location.href = './member/list';
+	location.href = '/web05_293/member/list';
 </script>
 
 </head>

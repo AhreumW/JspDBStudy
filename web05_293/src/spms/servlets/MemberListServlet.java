@@ -114,10 +114,18 @@ public class MemberListServlet extends HttpServlet{
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/member/MemberListView.jsp");
 			dispatcher.include(request, response);
 			
-		} catch (Exception e) {
-			 
-			e.printStackTrace();
-			throw new ServletException(e);
+			/*
+			 * 페이지전환기술은 다 알아야한다.
+			 * .include .forward
+			 */
+		} catch (Exception e) { 
+//			e.printStackTrace();
+//			throw new ServletException(e);
+			
+//			모든 에러 또한 *사용자를 위한 페이지*를 구현해야한다.
+			request.setAttribute("error", e);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Error.jsp");	//절대경로
+			dispatcher.forward(request, response);
 			
 		} finally {
 			//6. 자원 해제 
