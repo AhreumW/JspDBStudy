@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 	function listPageMoveFnc(){	
-		location.href = '/web05_293/member/list';
+		location.href = '/web05_303/member/list';
 	}
 </script>
 
@@ -20,7 +20,7 @@
 	
 	<jsp:include page="/Header.jsp"/>
 	
-	<p onclick='listPageMoveFnc();'>안녕하세요</p>
+	<p onclick='listPageMoveFnc();'>303 페이지 / 안녕하세요</p>
 	
 	<jsp:include page="/Tail.jsp"/>
 	

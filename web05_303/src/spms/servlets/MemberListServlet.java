@@ -25,6 +25,7 @@ import spms.dto.MemberDto;
 @WebServlet("/member/list")		
 public class MemberListServlet extends HttpServlet{
 
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
@@ -34,34 +35,17 @@ public class MemberListServlet extends HttpServlet{
 		Statement stmt = null;		//상태 
 		ResultSet rs = null;		//결과 
 		
-		//에러처리 해주기, try-catch로 이동
-		String driver = "";
-		String url = "";
-		String user = "";
-		String password = "";
 		
 		try {
+			//전역변수객체 - ServletContext 보관소
 			ServletContext sc = this.getServletContext();
+			//AppInitServlet에서 저장해둔  db connetion 가져온다. 
+			conn = (Connection)sc.getAttribute("conn");
 			
-			driver = sc.getInitParameter("driver");
-			url = sc.getInitParameter("url");
-			user = sc.getInitParameter("user");
-			password = sc.getInitParameter("password");
-			
-//			클래스 로드
-//			1. jdbc드라이버 등록
-			Class.forName(driver);
-			System.out.println("오라클 드라이버 로드 성공");
-			
-//			2. 데이터베이스 연결
-			conn = DriverManager.getConnection(url, user, password);
-			System.out.println("오라클 드라이버 연결 성공");
 			
 //			3. sql 실행 객체 준비
 			stmt = conn.createStatement();
 			
-			//sql문은 대문자로 작성해주기 
-			//단축키 : 대문자 변환 ctrl+shift+x	소문자는 +y
 			String sql = "SELECT MNO, MNAME, EMAIL, CRE_DATE"
 					+ " FROM MEMBER"
 					+ " ORDER BY MNO ASC";
@@ -74,8 +58,6 @@ public class MemberListServlet extends HttpServlet{
 			response.setContentType("text/html");
 			response.setCharacterEncoding("UTF-8");
 			
-			//회원은 여러 값이 들어올 수 있고 
-			//그 회원들은 arrayList로 저장된다. 
 			ArrayList<MemberDto> memberList = new ArrayList<MemberDto>();
 			
 			int mno =0;
@@ -98,37 +80,15 @@ public class MemberListServlet extends HttpServlet{
 				memberList.add(memberDto);
 			}
 			
-			/* setParameter vs setAttribute */
-			//setParameter는 반드시 문자열만 들어가는 것에 비해
-			//setAttribute는Object로 어떤 타입이든 전달할 수 있다. 
-			
-			//request에 회원목록 데이터 보관
 			request.setAttribute("memberList",memberList);	
 			
-			//.getRequestDispatcher("/member/MemberListView.jsp")
-			// 페이지 url를 호출하면서 
-			//.include(request, response)
-			//데이터를 같이 전달.  
-			
-			//.dispatcher
-			// - jsp 페이지로 출력을 위임한다. 
 			RequestDispatcher dispatcher = 
 					request.getRequestDispatcher("/member/MemberListView.jsp");
-			//.include - 데이터를 지키면서(포함) 페이지를 넘어간다.
 			dispatcher.include(request, response);	//url에 .MemberListView.jsp가 보이지 않는다.
 			
-			/*
-			 * 페이지전환기술은 다 알아야한다.
-			 * .include .forward
-			 */
 		} catch (Exception e) { 
-//			e.printStackTrace();
-//			throw new ServletException(e);
-			
-//			모든 에러 또한 *사용자를 위한 페이지*를 구현해야한다.
 			request.setAttribute("error", e);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/Error.jsp");	//절대경로
-			//.forward - 새로운 페이지로 위임시킨다.(데이터를 들고간다.)
 			dispatcher.forward(request, response);
 			
 		} finally {
@@ -154,15 +114,6 @@ public class MemberListServlet extends HttpServlet{
 				}
 			}
 			
-			//연결 해제
-			if(conn != null) {
-				try {
-					conn.close();
-					System.out.println("DB연결 종료");
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
 		
 		} // finally 종료
 		
@@ -172,8 +123,6 @@ public class MemberListServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
-		
-		//req.setCharacterEncoding("UTF-8");
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;

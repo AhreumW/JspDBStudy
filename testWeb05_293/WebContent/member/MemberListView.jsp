@@ -19,6 +19,8 @@
 	<jsp:include page="/Header.jsp"/>
 	<!-- !!! include 인클루드 - Header.jsp를 호출하고 수행 후 되돌아온다 !!!! -->
 
+	<jsp:include page="/myPage.jsp"/>
+
 	<h1>회원목록</h1>
 	<p>
 		<a href='add'>신규 회원</a>

@@ -1,0 +1,51 @@
+
+2020-05-13
+
+<	포워딩(Forwading)과 인클루딩(Including)	>
+
+
+.dispatcher
+- jsp 페이지로 출력을 위임한다. 
+
+	RequestDispatcher dispatcher 
+		= request.getRequestDispatcher("/member/MemberListView.jsp");
+
+페이지전환기술은 다 알아야한다.
+dispatcher	-------> 	* .include .forward * 
+
+
+
+.include - 데이터를 지키면서(포함) 페이지를 넘어간다.
+- url에 .MemberListView.jsp가 보이지 않는다.
+			
+.forward - 위임시킨다. (데이터를 들고간다.)
+- url에 Error.jsp로 보내고 다시 되돌아오지 않음!! 
+		
+--------------------------------------------------------------
+<< 포워딩 >>
+				요청			member/list
+[			]	-------->	[			]
+[			]				[			]
+[			]	<--------	[			]
+				응답	
+								↓ 위임	X↑(위임시 응답이 되돌아오지 않음!!) : 완벽하게 새로운 페이지로 넘긴다. 
+							[	Error.jsp ]
+--------------------------------------------------------------
+							
+<jsp:include page="/Header.jsp"/>
+ : 서블릿에서의 dispatcher.include 와 같은 기능이다. 
+!! include 인클루드 - Header.jsp를 호출하고 수행 후 되돌아온다 !!		
+
+--------------------------------------------------------------
+<< 인클루딩 >>
+				요청			member/list
+[			]	-------->	[			]	MemberListView.jsp 수행 후 
+[			]				[			] 위임-> Header.jsp 수행
+[			]				[			] <-위임
+[			]	<--------	[			] 위임-> Tail.jsp 수행
+[			]	응답			[			] <-위임
+				
+--------------------------------------------------------------
+
+
+		
