@@ -7,14 +7,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//web.xml 사용 (요즘은 어노테이션을 주로 사용)
-//@WebServlet("/member/add")
+@WebServlet(value="/member/add")
 public class MemberAddServlet extends HttpServlet{
 	
 	@Override
@@ -55,14 +55,7 @@ public class MemberAddServlet extends HttpServlet{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";		
-		String user = "jsp";
-		String password = "jsp12";
-		String driverUrl = "oracle.jdbc.driver.OracleDriver";
-		
-		//입력시의 한글 인코딩설정   
-		//CharacterEncodingFilter가 처리해 주기 때문에 따로 입력하지 않아도 된다. 
-//		req.setCharacterEncoding("UTF-8");
+		ServletContext sc = this.getServletContext();
 		
 //		사용자의 입력을 받는다.
 		String emailStr = req.getParameter("email");
@@ -70,8 +63,9 @@ public class MemberAddServlet extends HttpServlet{
 		String nameStr = req.getParameter("name");
 		
 		try {
-			Class.forName(driverUrl);
-			conn = DriverManager.getConnection(url, user, password);
+			
+			conn = (Connection)sc.getAttribute("conn");
+			
 			
 			String sql ="INSERT INTO MEMBER"
 					+ "(MNO, EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE)"
@@ -96,22 +90,13 @@ public class MemberAddServlet extends HttpServlet{
 			String htmlStr = "";
 			
 			htmlStr += "<html><head><title>회원등록결과</title>";			
-			//http-equiv='Refresh'는 이 페이지가 meta태그에 의해 새로 읽는다는 것을 의미
-			//content='3; url=./list'	: 3은 3초후에 url에 적힌 주소로 이동한 다는 것을 뜻 함
-			//url을 생략했을 경우 현재의 페이지를 다시 읽어준다. 
 			htmlStr += "<meta http-equiv='Refresh' content='3; url=./list'>";
 			htmlStr += "</head><body>";
 			htmlStr += "<p>등록 성공입니다.!!</p>";
-			//htmlStr += "<div style='width:100px; border:1px solid black; text-align:center;'>";
-			//htmlStr += "<a href='./list'>회원목록</a></div>";
 			htmlStr += "</body></html>";
 			
 			out.println(htmlStr);
 			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("jdbc 오라클 드라이버 로드 실패 ");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -127,15 +112,7 @@ public class MemberAddServlet extends HttpServlet{
 				}
 			}
 			
-			if(conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.out.println("db연결 해제 실패");
-				}
-			}
+			
 		}
 		
 		
