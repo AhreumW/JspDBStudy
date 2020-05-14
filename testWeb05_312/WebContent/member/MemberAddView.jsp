@@ -23,7 +23,7 @@
 	이메일: <input type='text' name='email'><br>
 	암호: <input type='password' name='password'><br>
 	<input type='submit' value='추가'>
-	<input onclick="backFnc();" type='button' value='뒤로가기'>
+	<input onclick="backFnc();" type='button' value='뒤로가기'>	<!-- onclick="location.href='./list'" -->
 	<input type='reset' value='취소'>
 	</form>
 	

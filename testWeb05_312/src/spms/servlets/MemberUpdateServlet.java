@@ -10,12 +10,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
+import spms.dto.MemberDto;
 
 
 @SuppressWarnings("serial")
@@ -58,41 +62,25 @@ public class MemberUpdateServlet extends HttpServlet{
 			Date creDate = null;
 			
 			if(rs.next()) {
+				MemberDto member = new MemberDto();
+				
 				mName = rs.getString("MNAME");
 				email = rs.getString("email");
 				creDate = rs.getDate("cre_date");
+				
+				member.setNo(mNo);
+				member.setName(mName);
+				member.setEmail(email);
+				member.setCreateDate(creDate);
+				
+				req.setAttribute("member", member);
 			}
 			
-			res.setContentType("text/html");
-			res.setCharacterEncoding("UTF-8");
 			
-			PrintWriter out = res.getWriter();
+			RequestDispatcher rd = 
+					req.getRequestDispatcher("/member/MemberUpdateView.jsp");
+			rd.forward(req, res);
 			
-			String htmlStr = "";
-			//추가 		// alt+shift+a 다중코드선택키
-			htmlStr += "<!DOCTYPE html>";
-			htmlStr += "<html>";
-			htmlStr += "<head>";
-			htmlStr += "<meta charset='UTF-8'>";
-			htmlStr += "<title>회원정보</title>";
-			htmlStr += "</head>";
-			htmlStr += "<body>";
-			htmlStr += "<h1>회원정보</h1>";
-			htmlStr += "<form action='./update' method='post'>";
-			htmlStr += "번호: <input type='text' name='mNo' value='"+ mNo +"' ";
-			htmlStr += " readonly='readonly'><br>";
-			htmlStr += "이름: <input type='text' name='name' value='"+ mName +"'><br> ";
-			htmlStr += "이메일: <input type='text' name='email' value='"+ email +"'><br>";
-			htmlStr += "가입일: "+ creDate +"<br>";
-			htmlStr += "<input type='submit' value='저장'>";
-			htmlStr += " <input type='button' value='삭제' onclick='location.href=\"./delete?no="+mNo+"\"'>";
-			htmlStr += " <input type='button' value='취소' onclick='location.href=\"./list\"'>";
-			htmlStr += "</form>";
-			htmlStr += "</body>";
-			htmlStr += "</html>";
-			
-			out.println(htmlStr);
-
 			
 		} catch (SQLException e) {
 			 
