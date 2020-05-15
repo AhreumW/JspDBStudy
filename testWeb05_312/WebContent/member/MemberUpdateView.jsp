@@ -16,7 +16,8 @@
 	
 	<jsp:include page="/Header.jsp"/>
 	
-<%-- 	<form action='./update' method='post'>
+<%-- 하나하나 attribute로 저장해서 넘기는 것이 아닌  MemberDto 객체로 넘기는 것이 변수를 줄이고 헷갈리지 않는다.	
+	<form action='./update' method='post'>
 		번호: <input type='text' name='mNo' value='<%=request.getAttribute("mNo")%>' readonly='readonly'><br>
 		이름: <input type='text' name='name' value='<%=request.getAttribute("mName")%>'><br> 
 		이메일: <input type='text' name='email' value='<%=request.getAttribute("email")%>'><br>
