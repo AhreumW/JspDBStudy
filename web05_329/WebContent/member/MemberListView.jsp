@@ -27,20 +27,13 @@
 		type="java.util.ArrayList<spms.dto.MemberDto>"									
 	/>
 	
-	<jsp:useBean 
-		id="memberVo"
-		scope="request"
-		class="spms.dto.MemberDto"
-	/>
-	<jsp:setProperty property="password" name="memberVo"
-		value="test"/>
+	
 	
 	<%
 	//확장된 for문 - 임시변수 선언 : 대상배열명
 		for(MemberDto memberDto : memberList){	 
 	%>
 			<%=memberDto.getNo()%>,
-			여기는 비번이야 :<jsp:getProperty property="password" name="memberVo"/>, 
 			<a href='update?no=<%=memberDto.getNo() %>'>
 				<%=memberDto.getName()%>
 			</a>,
