@@ -11,7 +11,6 @@
 
 	function listPageMoveFnc(){	
 		location.href = '<%=request.getContextPath()%>/auth/login'; 
-// 		location.href = '/web05_312/auth/login'; 
 	}
 </script>
 

@@ -28,9 +28,23 @@ jsp:param		-
 
 등등
 
+--------------------------------------------------------------------
 
+	 ArrayList<MemberDto> memberList = 
+				(ArrayList<MemberDto>)request.getAttribute("memberList");
+	 를 대체할 수 있는 액션 태그 <jsp:useBean> 
 
+	<jsp:useBean 	-> 변수객체를 생성해 할당 할수 있는 기술 -> Vo객체
+		id="이름(변수명 ->객체 참조 변수 이름)" 			-변수명
+		scope="범위(저장소->객체를 저장할 보관소 지정)" 	-application, page, request, session만 사용 가능
+												-page만 같은 jsp에서만 데이터 사용가능, 기본값 / 나머지는 데이터 전달 
+		class="클래스명->자바 객체를 생성할 때 사용할 클래스 이름" 	-new ArrayList()와 같다, 객체생성
+														-int라면 Java.lang.Integer
+		type="타입명->참조변수를 선언할 때 사용할 타입의 이름"		-클래스전체이름, 변수의 타입
+														-ArrayList<MemberDto>와 같음
+	/> 
 
+--------------------------------------------------------------------
 
 
 

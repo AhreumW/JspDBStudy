@@ -1,4 +1,3 @@
-<!-- < % @ : 지시자 -->
 <%@page import="spms.dto.MemberDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -14,28 +13,34 @@
 
 <body>
 	
-	<!-- <jsp:include page=""/> -->
-	<!-- : 서블릿에서의 dispatcher.include 와 같은 기능이다.  -->
 	<jsp:include page="/Header.jsp"/>
-	<!-- !!! include 인클루드 - Header.jsp를 호출하고 수행 후 되돌아온다 !!!! -->
-
+	
 	<h1>회원목록</h1>
 	<p>
 		<a href='add'>신규 회원</a>
 	</p>
 	
-	<!-- 순차수행 -->
-	<!-- 스크립트렛,릿 : scriptlet -->
-	<!-- 스크립트릿 안에는 태그를 적을 수 없으며, 태그를 적기위해서는 스크립트렛을 닫고 바깥에 적어야한다.  -->
-	<%
-		ArrayList<MemberDto> memberList = 
-			(ArrayList<MemberDto>)request.getAttribute("memberList");
+	<jsp:useBean 
+		id="memberList" 
+		scope="request" 
+		class="java.util.ArrayList"
+		type="java.util.ArrayList<spms.dto.MemberDto>"									
+	/>
 	
-		//확장된 for문 - 임시변수 선언 : 대상배열명
+	<jsp:useBean 
+		id="memberVo"
+		scope="request"
+		class="spms.dto.MemberDto"
+	/>
+	<jsp:setProperty property="password" name="memberVo"
+		value="test"/>
+	
+	<%
+	//확장된 for문 - 임시변수 선언 : 대상배열명
 		for(MemberDto memberDto : memberList){	 
-	%><!-- 여기까지의 자바코드는 화면에 나타나지 않으며 -->
-			<!-- =이 붙은 Expression은 html에 나타난다. -->
+	%>
 			<%=memberDto.getNo()%>,
+			여기는 비번이야 :<jsp:getProperty property="password" name="memberVo"/>, 
 			<a href='update?no=<%=memberDto.getNo() %>'>
 				<%=memberDto.getName()%>
 			</a>,
@@ -44,8 +49,8 @@
 			<a href='delete?no=<%=memberDto.getNo()%>'>[ 삭제 ]</a>
 			<br/>
 	<%
-		}
-	%>		
+		} 
+	%>	
 		
 	<jsp:include page="/Tail.jsp"/>		
 			
