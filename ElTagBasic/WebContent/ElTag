@@ -1,0 +1,11 @@
+
+2020-05-18
+
+EL태그 Basic
+
+uri 최신 주소 유의 		http://java.sun.com/jstl/core는 구식
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+prefix가 태그의 앞 명명자 부분을 말함 
+<c: 
+

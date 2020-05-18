@@ -1,0 +1,31 @@
+
+2020-05-18
+
+JSTL(JSP Standard Tag Library)
+JSP 확장 태그
+JSTL은 JSP의 기본 태그가 아니므로 사용하려면 JSTL API 및
+이를 구현한 자바 라이브러리를 별도로 내려 받아야 한다. 	-> 모듈 레벨
+JSTL 태그를 이용하려면 JSP 페이지에서 자바 코딩을 줄일 수 있다. 
+
+@JSTL 주요 태그의 사용법
+사용할 태그 라이브러리 선언
+JSTL 태그를 사용하려면 그 태그의 라이브러리를 선언해야 한다.
+
+선언방법
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+(uri = url + urn)
+
+<%@ taglib %>는 JSP의 지시자 태그(Directive tag)이다.
+uri 속성은 태그 라이브러리의 네임스페이스 이름이다.
+prefix 속성은 JSTL 태그를 사용할 태그 이름 앞에 붙일 접두사이다. 
+
+
+태그라이브러리	접두사		
+Core		c		http://java.sun.com/jsp/jstl/core	*	-> 변수들 다룰 때 사용
+XML			x		 ~ /xml									-> 이제 다른 것으로 대체 됌 
+I18N		fmt		 ~ /fmt								*	-> 국제화(메시지 포멧, 로케일, 날짜 관련)
+Database	sql		 ~ /sql									-> 이제 다른 것으로 대체 됌 
+Function	fn		 ~ /functions							-> 문자열 처리, 요즘 안씀
+
+
