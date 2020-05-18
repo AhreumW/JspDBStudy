@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -20,85 +19,79 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import spms.dto.MemberDto;
+import sun.rmi.server.Dispatcher;
 
-//어노테이션 @	 
-@WebServlet("/member/list")		
-public class MemberListServlet extends HttpServlet{
 
-	
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/member/update"})	
+public class MemberUpdateServlet extends HttpServlet{
+
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
-		
+	
 //		데이터베이스 관련 객체 변수 선언
 		Connection conn = null;		//연결  
-		Statement stmt = null;		//상태 
+		PreparedStatement pstmt = null;		//상태 
 		ResultSet rs = null;		//결과 
 		
 		
-		try {
-			//전역변수객체 - ServletContext 보관소
+		RequestDispatcher rd = null;
+		
+		try {	
+		
+			String noStr = req.getParameter("no");
+			int no = Integer.parseInt(noStr);
+			
 			ServletContext sc = this.getServletContext();
-			//AppInitServlet에서 저장해둔  db connetion 가져온다. 
 			conn = (Connection)sc.getAttribute("conn");
 			
+			String sql = "SELECT MNO, EMAIL, MNAME, CRE_DATE" 
+			         + " FROM MEMBER" 
+			         + " WHERE MNO = ?";
+				
 			
 //			3. sql 실행 객체 준비
-			stmt = conn.createStatement();
-			
-			String sql = "SELECT MNO, MNAME, EMAIL, CRE_DATE"
-					+ " FROM MEMBER"
-					+ " ORDER BY MNO ASC";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
 			
 //			sql 실행문
 //			4. 결과 가져오기
-			rs = stmt.executeQuery(sql);
-			System.out.println("쿼리 수행 성공");
+			rs = pstmt.executeQuery();
 			
-			response.setContentType("text/html");
-			response.setCharacterEncoding("UTF-8");
-			
-			ArrayList<MemberDto> memberList = new ArrayList<MemberDto>();
-			
-			int mno =0;
-			String mname = "";
+			String name = "";
 			String email = "";
 			Date creDate = null;
 			
-			MemberDto memberDto = null;
-			while(rs.next()) {
-				mno = rs.getInt("MNO");
-				mname = rs.getString("MNAME");
-				email = rs.getString("EMAIL");
-				creDate = rs.getDate("CRE_DATE");
+			MemberDto memberDto = new MemberDto();
+			
+			if(rs.next()) {
+				name = rs.getString("MNAME");
+				email = rs.getString("email");
+				creDate = rs.getDate("cre_date");
 				
-				//보통 한번에 넣음
-				memberDto = new MemberDto(mno, mname, email, creDate);
-				memberList.add(memberDto);
+				memberDto.setNo(no);
+				memberDto.setName(name);
+				memberDto.setEmail(email); 
+				memberDto.setCreateDate(creDate); 
 				
-				//testActionTag - 맨 마지막 member가 들어감
-				//이런 식은 수정의 의미 
-//				memberDto = new MemberDto();
-//				memberDto.setNo(mno);
-//				memberDto.setName(mname);
-//				memberDto.setEmail(email);
-//				memberDto.setCreateDate(creDate);
-				
+			}else {
+				throw new Exception("해당 번호의 회원을 찾을 수 없습니다.");
 			}
+
+			req.setAttribute("memberDto", memberDto);
 			
-			request.setAttribute("memberList",memberList);	
-			request.setAttribute("testActionTag",memberDto);	
+			rd = req.getRequestDispatcher("./MemberUpdateForm.jsp");
+			rd.forward(req, res);
 			
-			//RequestDispatcher는 정보를 가질수있다. 
-			//데이터 들고감
-			RequestDispatcher dispatcher = 
-					request.getRequestDispatcher("/member/MemberListView.jsp");
-			dispatcher.include(request, response);	//url에 .MemberListView.jsp가 보이지 않는다.
 			
-		} catch (Exception e) { 
-			request.setAttribute("error", e);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Error.jsp");	//절대경로
-			dispatcher.forward(request, response);
+		} catch (Exception e) {
+			 
+			e.printStackTrace();
+			
+			req.setAttribute("error", e);
+			rd = req.getRequestDispatcher("/Error.jsp");
+			rd.forward(req, res);
 			
 		} finally {
 			//6. 자원 해제 
@@ -107,61 +100,68 @@ public class MemberListServlet extends HttpServlet{
 			if(rs != null) {	//null이 아닌 경우=객체가 존재하는경우, close시킨다.
 				try {
 					rs.close();
-					System.out.println("ResultSet 종료");
 				}catch(SQLException e){
 					e.printStackTrace();
 				}
 			}
 			
 			//상태 해제
-			if(stmt != null) {
+			if(pstmt != null) {
 				try {
-					stmt.close();
-					System.out.println("쿼리 질의 종료");
+					pstmt.close();
 				}catch(SQLException e){
 					e.printStackTrace();
 				}
 			}
-			
 		
 		} // finally 종료
 		
-		
-	}// doGet end
-
+	}
+	
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
+
+		//req.setCharacterEncoding("UTF-8");
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
-		ServletContext sc = this.getServletContext();
 
+		//web.xml의 servlet단위의 context를 먼저 부르고 (context는 전역으로 프로젝트가 끝날때까지 사라지지 않는다.)
+		ServletContext sc = this.getServletContext();
+		//<context-param>의 이름들을 가져온다. 
 		String driver = sc.getInitParameter("driver");
 		String url = sc.getInitParameter("url");
 		String user = sc.getInitParameter("user");
 		String password = sc.getInitParameter("password");
 		
-		int mNo = Integer.parseInt(req.getParameter("mno"));
+		String email = req.getParameter("email");
+		String name = req.getParameter("name");
+		int mNo = Integer.parseInt(req.getParameter("mNo"));
 		
 		try {
 			Class.forName(driver);
 
+			System.out.println("오라클 드라이버 로드");
 			conn = DriverManager.getConnection(url, user, password);
 			
 			String sql ="";
 			
-			sql ="DELETE FROM MEMBER";
-			sql += " WHERE MNO=?";
+			sql ="update member";
+			sql += " set email=?, mname=?, mod_date=sysdate";
+			sql += " where mno=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, mNo);
+			pstmt.setString(1, email);
+			pstmt.setString(2, name);
+			pstmt.setInt(3, mNo);
 			
-			pstmt.executeUpdate();	 
+			pstmt.executeUpdate();	//여기서 DB 반영됨
 			
 			res.sendRedirect("./list");
+			
 			
 		} catch (ClassNotFoundException e) {
 
@@ -188,9 +188,14 @@ public class MemberListServlet extends HttpServlet{
 					e.printStackTrace();
 				}
 			}
-		
 		}
+		
+		
+		
 		
 	}
 	
+	
+	
+
 }

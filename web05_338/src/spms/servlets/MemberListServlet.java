@@ -65,29 +65,22 @@ public class MemberListServlet extends HttpServlet{
 			String email = "";
 			Date creDate = null;
 			
-			MemberDto memberDto = null;
 			while(rs.next()) {
 				mno = rs.getInt("MNO");
 				mname = rs.getString("MNAME");
 				email = rs.getString("EMAIL");
 				creDate = rs.getDate("CRE_DATE");
 				
-				//보통 한번에 넣음
-				memberDto = new MemberDto(mno, mname, email, creDate);
+				MemberDto memberDto = new MemberDto();
+				memberDto.setNo(mno);
+				memberDto.setName(mname);
+				memberDto.setEmail(email);
+				memberDto.setCreateDate(creDate);
+				
 				memberList.add(memberDto);
-				
-				//testActionTag - 맨 마지막 member가 들어감
-				//이런 식은 수정의 의미 
-//				memberDto = new MemberDto();
-//				memberDto.setNo(mno);
-//				memberDto.setName(mname);
-//				memberDto.setEmail(email);
-//				memberDto.setCreateDate(creDate);
-				
 			}
 			
 			request.setAttribute("memberList",memberList);	
-			request.setAttribute("testActionTag",memberDto);	
 			
 			//RequestDispatcher는 정보를 가질수있다. 
 			//데이터 들고감

@@ -16,16 +16,11 @@ public class MemberDto {
 	
 	
 	public MemberDto() {
-	}
-	
-	public MemberDto(int no, String name, String email, Date createDate) {
-		this.no = no;
-		this.name = name;
-		this.email = email;
-		this.createDate = createDate;
+		super();
 	}
 	
 	public MemberDto(int no, String name, String email, String password, Date createDate, Date modifiedDate) {
+		super();
 		this.no = no;
 		this.name = name;
 		this.email = email;

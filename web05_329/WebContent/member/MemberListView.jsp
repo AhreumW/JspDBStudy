@@ -27,10 +27,22 @@
 		type="java.util.ArrayList<spms.dto.MemberDto>"									
 	/>
 	
+<%-- 	<jsp:useBean  --%>
+<%-- 		id="testActionTag" --%>
+<%-- 		scope="request" --%>
+<%-- 		class="spms.dto.MemberDto"	 --%>
+<%-- 	/> --%>
 	
+<%-- 	<jsp:setProperty property="password" name="testActionTag" --%>
+<%-- 		value="OhOhOh"/> --%>
+<%-- 	<jsp:getProperty property="password" name="testActionTag"/> --%>
+	
+<!-- 	<br/> -->
 	
 	<%
-	//확장된 for문 - 임시변수 선언 : 대상배열명
+		//System.out.println(testActionTag);
+	
+		//확장된 for문 - 임시변수 선언 : 대상배열명
 		for(MemberDto memberDto : memberList){	 
 	%>
 			<%=memberDto.getNo()%>,

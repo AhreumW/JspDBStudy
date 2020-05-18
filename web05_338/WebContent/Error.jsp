@@ -11,14 +11,6 @@
 
 <body>
 
-	<jsp:useBean 
-		id="memberDto" 	
-		scope="session" 	
-		class="spms.dto.MemberDto" 
-	/>
-	
-	<p><jsp:getProperty property="name" name="memberDto"/>님</p>
-	
 	<p>
 		죄송합니다.<br/>
 		요청하신 페이지를 찾을 수 없습니다.<br/>

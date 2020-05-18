@@ -1,0 +1,53 @@
+
+2020-05-18
+
+********** 현업에서도 쓰는 ***********
+
+EL(Expression Language) 태그
+마침표(.)와 대괄호([])를 사용하여 자바 빈의 프로퍼티나 맵, 
+리스트, 배열의 값을 보다 쉽게 꺼내게 해주는 기술이다. 
+JSP에서는 주로 보관소에 들어 있는 값을 꺼낼 때 사용한다. 
+EL을 사용하면 액션 태그를 사용하는 것보다 훨씬 더 간단히
+보관소에 들어 있는 객체에 접근하여 값을 꺼내거나 메서드를 호출할 수 있다. 
+
+
+EL 표기법
+${} 사용하여 값을 표현한다.
+${표현식}으로 지정된 값을 JSP가 실행될 때 JSP 페이지에 즉시 반영된다. 
+
+
+EL 표기법
+ex: ${memberDto.no}	또는 ${memberDto["no"]}
+	${객체이름.프로퍼티}	${객체이름["프로퍼티"]}
+(attribute = property // property는 attribute에 대한 HTML DOM 트리안에서의 표현)
+
+위의 EL표기법을 자바 코드로 표현하면 이렇다. 
+	memberDto obj = (MemberDto)request.getAttribute("memberDto");
+	int number = obj.getNo();
+
+
+@EL에서 검색 범위 지정
+EL도 <jsp:useBean>처럼 네 군데 보관소에서 값을 꺼낼 수 있다. 
+다만 다른 점은 EL로는 객체를 생성할 수 없다는 것이다.  
+* 참조만 하고 생성은 하지 않는다 .=> 모든설정은 컨트롤러에서 수행하고 화면단과 기능을 철저히 분리시킨다. *
+다음은 EL에서 보관소를 참조할 때 사용하는 이름이다. 
+
+pageScope -> JspContext
+requestScope -> ServletRequest
+sessionScope -> HttpSession
+applicationScope -> ServletContext
+
+pageContext의 findAttribute()의 보관소 찾는 순서 
+JspContext -> ServletRequest -> HttpSession -> ServletContext
+-> null
+
+
+
+
+
+
+
+
+
+
+

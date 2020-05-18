@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -100,17 +99,8 @@ public class MemberAddServlet extends HttpServlet{
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			System.out.println("insert into member 수행 실패");
-			
-			req.setAttribute("error", e);
-			
-//			이는  보안 위험
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("/Error.jsp");	//절대경로
-//			dispatcher.forward(req, res);
-			
-			res.sendRedirect("/web05_329/Error.jsp");
-			
+			e.printStackTrace();
+			System.out.println("insert into member 수행 실패");
 		}finally {
 			if(pstmt != null) {
 				try {
