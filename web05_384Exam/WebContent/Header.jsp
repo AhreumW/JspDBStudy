@@ -15,9 +15,10 @@
 <div style="background-color:#00008b; color:#ffffff; height:20px; padding: 5px;">
 	SPMS(Simple Project Management System)
 	
-	<c:if test="${member.email ne null}">
+	<!-- 로그인이 안되어있는 경우, email이 null값인 경우 : 로그아웃이 뜨지 않는다 -->
+	<c:if test="${sessionScope.member.email ne null}">
 		<span style="float:right;">
-			${member.name}
+			${sessionScope.member.name}
 			<a style="color:white;" href="<%=request.getContextPath()%>/auth/logout">로그아웃</a>
 		</span>
 	</c:if>
