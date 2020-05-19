@@ -20,30 +20,9 @@ public class MemberAddServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
-
 		
-		res.setContentType("text/html");
-		res.setCharacterEncoding("UTF-8");
-		PrintWriter out = res.getWriter();
-		
-		String htmlStr = "";
-		
-		htmlStr += "<html><head><title>회원 등록</title></head>";
-		htmlStr += "<body>";
-		htmlStr += "<h1>회원등록</h1>";
-//		form태그의 
-//		method는 Get, Post 방식을 뜻한다. 
-//		어떤 방식이든 form 태그의 action 주소로 전송시킨다.
-		htmlStr += "<form action='add' method='post'>";		 
-		htmlStr += "이름: <input type='text' name='name'><br>";
-		htmlStr += "이메일: <input type='text' name='email'><br>";
-		htmlStr += "암호: <input type='password' name='password'><br>";
-		htmlStr += "<input type='submit' value='추가'>";
-		htmlStr += "<input type='reset' value='취소'>";
-		htmlStr += "</form>";
-		htmlStr += "</body></html>";
-		
-		out.println(htmlStr);
+		res.sendRedirect("../member/MemberForm.jsp");
+//		res.sendRedirect("./MemberForm.jsp");	//랑 같음
 		
 	}
 	

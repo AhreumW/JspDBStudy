@@ -138,7 +138,7 @@ public class MemberUpdateServlet extends HttpServlet{
 		
 		String email = req.getParameter("email");
 		String name = req.getParameter("name");
-		int mNo = Integer.parseInt(req.getParameter("mNo"));
+		int no = Integer.parseInt(req.getParameter("no"));
 		
 		try {
 			Class.forName(driver);
@@ -156,7 +156,7 @@ public class MemberUpdateServlet extends HttpServlet{
 			
 			pstmt.setString(1, email);
 			pstmt.setString(2, name);
-			pstmt.setInt(3, mNo);
+			pstmt.setInt(3, no);
 			
 			pstmt.executeUpdate();	//여기서 DB 반영됨
 			

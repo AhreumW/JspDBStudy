@@ -47,12 +47,15 @@
 <%-- 	${status.current}<br/>      <!– 현재 아이템 –> --%>
 <%-- 	${status.index}<br/>        <!– 0부터의 순서 –> --%>
 <%-- 	${status.count}<br/>        <!– 1부터의 순서 –> --%>
-<%-- 	${status.first}<br/>          <!– 현재 루프가 처음인지 반환 –> --%>
-<%-- 	${status.last}<br/>           <!– 현재 루프가 마지막인지 반환 –>  --%>
+<%-- 	${status.first}<br/>        <!– 현재 루프가 처음인지 반환 –> --%>
+<%-- 	${status.last}<br/>         <!– 현재 루프가 마지막인지 반환 –>  --%>
 <%-- 	${status.begin}<br/>        <!– 시작값 –> --%>
-<%-- 	${status.end}<br/>           <!– 끝값 –> --%>
-<%-- 	${status.step}<br/>          <!– 증가값 –> --%>
+<%-- 	${status.end}<br/>          <!– 끝값 –> --%>
+<%-- 	${status.step}<br/>         <!– 증가값 –> --%>
 
+	
+	
+	
 </body>
 
 </html>
